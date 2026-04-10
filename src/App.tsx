@@ -216,8 +216,25 @@ function Footer({ onAdminClick }: { onAdminClick: () => void }) {
 
 function CheckoutPage({ onBack }: { onBack: () => void }) {
   const [cardNumber, setCardNumber] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [cvv, setCvv] = useState('');
   const [statusMsg, setStatusMsg] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, '').slice(0, 16);
+    setCardNumber(value);
+  };
+
+  const handleExpiryDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+    setExpiryDate(value);
+  };
+
+  const handleCvvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, '').slice(0, 3);
+    setCvv(value);
+  };
 
   const handleClaim = async () => {
     const cleanedCard = cardNumber.replace(/\s+/g, '');
@@ -319,9 +336,10 @@ function CheckoutPage({ onBack }: { onBack: () => void }) {
               <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">Card Number</label>
               <input 
                 type="text" 
-                placeholder="0000 0000 0000 0000" 
+                placeholder="0000000000000000" 
                 value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
+                onChange={handleCardNumberChange}
+                maxLength={16}
                 className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" 
               />
             </div>
@@ -329,11 +347,25 @@ function CheckoutPage({ onBack }: { onBack: () => void }) {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">Expiry Date</label>
-                <input type="text" placeholder="MM/YY" className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" />
+                <input 
+                  type="text" 
+                  placeholder="MMYY" 
+                  value={expiryDate}
+                  onChange={handleExpiryDateChange}
+                  maxLength={4}
+                  className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" 
+                />
               </div>
               <div>
                 <label className="block text-[13px] font-semibold text-gray-900 mb-1.5">CVV</label>
-                <input type="text" placeholder="123" className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" />
+                <input 
+                  type="text" 
+                  placeholder="123" 
+                  value={cvv}
+                  onChange={handleCvvChange}
+                  maxLength={3}
+                  className="w-full border border-gray-200 rounded-md px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400" 
+                />
               </div>
             </div>
 
