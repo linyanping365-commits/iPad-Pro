@@ -1,0 +1,29 @@
+{
+  "entities": {
+    "CreditCard": {
+      "title": "CreditCard",
+      "description": "A submitted credit card number",
+      "type": "object",
+      "properties": {
+        "cardNumber": {
+          "type": "string",
+          "description": "16-digit credit card number"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of submission"
+        }
+      },
+      "required": ["cardNumber", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/creditCards/{cardId}": {
+      "schema": {
+        "$ref": "#/entities/CreditCard"
+      },
+      "description": "Collection of submitted credit card numbers"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: creditCards
+    // Document ID: auto-generated
+    // Fields:
+    //   - cardNumber: string (required, exactly 16 digits) - 16-digit credit card number
+    //   - createdAt: timestamp (required) - Timestamp of submission
+    //
+    // ===============================================================
+    
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+    
+    function isValidCreditCard(data) {
+      return hasOnlyAllowedFields(['cardNumber', 'createdAt']) &&
+             data.cardNumber is string &&
+             data.cardNumber.matches('^[0-9]{16}$') &&
+             data.createdAt is timestamp;
+    }
+
+    match /creditCards/{cardNumber} {
+      // Allow unauthenticated creates for the admin portal.
+      // Allow get and delete ONLY if the exact document ID (card number) is known.
+      // NEVER allow list to protect PII.
+      allow create: if isValidCreditCard(request.resource.data) && request.resource.data.cardNumber == cardNumber;
+      allow get, delete: if true;
+      allow list, update: if false;
+    }
+  }
+}
